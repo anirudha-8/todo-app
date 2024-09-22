@@ -2,29 +2,40 @@
 
 import { useState } from "react";
 
-import { Box, Button, Grid, Grid2, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Home() {
-  // state for the todo input field
-  const [todo, setTodo] = useState("");
+  const [todo, setTodo] = useState(""); // State for the todo input field
+  const [todos, setTodos] = useState([]); // State for the list of todos
 
-  // state for the list of todos
-  const [todos, setTodos] = useState([]);
-
-  // handle input change
+  // Handle input change
   const handleChange = (e) => {
     setTodo(e.target.value);
-  }
+  };
 
-  // handle button click
+  // Handle adding a new todo in todos array list
   const handleAddToDo = () => {
+    if (todo.trim()) {
+      setTodos((prev) => [...prev, todo]);
+      setTodo(""); // Clear input field after adding
+    }
+  };
 
-    // add new todo to the list
-    setTodos(prev => [...prev, todo]);
-
-    // clear the input field after adding
-    setTodo("");
-  }
+  // Handle deleting a specific todo specific using todo index
+  const handleToDoDelete = (i) => {
+    const updatedTodos = todos.filter((_, index) => i !== index);
+    setTodos(updatedTodos);
+  };
 
   return (
     <Box>
@@ -33,7 +44,7 @@ export default function Home() {
           <TextField
             fullWidth
             id="outlined-basic"
-            label="Outlined"
+            label="Enter ToDo"
             variant="outlined"
             value={todo}
             onChange={handleChange}
@@ -43,13 +54,37 @@ export default function Home() {
           <Button
             fullWidth
             variant="contained"
-            sx={{
-              height: "100%",
-            }}
+            sx={{ height: "100%" }}
             onClick={handleAddToDo}
           >
             Add ToDo
           </Button>
+        </Grid>
+
+        {/* Display the todo list */}
+        <Grid item xs={12}>
+          <List>
+            {todos.map((todo, index) => (
+              <ListItem
+                key={index}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleToDoDelete(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+                sx={{
+                  border: 1,
+                  my: 2,
+                }}
+              >
+                <ListItemText primary={todo} />
+              </ListItem>
+            ))}
+          </List>
         </Grid>
       </Grid>
     </Box>
