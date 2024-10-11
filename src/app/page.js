@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             id="outlined-basic"
@@ -50,7 +50,7 @@ export default function Home() {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Button
             fullWidth
             variant="contained"
